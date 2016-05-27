@@ -61,7 +61,19 @@ Object.assign(FlickBee.prototype, {
 	_move: function(event) {
 		var dx = event.clientX - this._startX;
 		var dy = event.clientY - this._startY;
-		console.log(dx, dy);
+
+		var style = {
+			y: dy / 3,
+		};
+		this._setStyle(style);
+	},
+
+	_setStyle: function(style) {
+		var styleDefinitions = [
+			'translateY(' + style.y + 'px)'
+		];
+		var styleText = styleDefinitions.join(' ');
+		this.el.style.transform = styleText;
 	},
 
 	/**
