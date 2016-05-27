@@ -1,15 +1,17 @@
 document.querySelector('.js-open').addEventListener('click', function(event) {
 	var elDialog = document.querySelector('.js-dialog');
 	elDialog.classList.add('is-visible');
-	FlickBee({
-		el: elDialog,
-	});
+	if (!window.flickbee) {
+		window.flickbee = FlickBee({
+			el: elDialog.querySelector('.dialog-content'),
+		});
+	}
 });
 
 document.addEventListener('click', function(event) {
 	var elTarget = event.target;
 	if (elTarget.closest('.dialog-content')) {
-		// nothing to do
+		// ignore
 		return;
 	}
 

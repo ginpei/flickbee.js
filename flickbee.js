@@ -3,7 +3,7 @@ function FlickBee(options) {
 		this.initialize(options);
 	}
 	else {
-		FlickBee.create(options);
+		return FlickBee.create(options);
 	}
 }
 
@@ -20,7 +20,88 @@ if (!Object.assign) {
 }
 
 Object.assign(FlickBee.prototype, {
+	/**
+	 * @type Boolean
+	 * @see #_startSwiping
+	 * @see #_stopSwiping
+	 */
+	swiping: false,
+
+	/**
+	 * @param {object} options
+	 */
 	initialize: function(options) {
-		console.log('FlickBee');
+		this.el = options.el;
+
+		this._bind(this.el);
+	},
+
+	/**
+	 * @param {HTMLElement} el
+	 */
+	_bind: function(el) {
+		el.addEventListener('mousedown', this.el_onmousedown.bind(this));
+		window.document.addEventListener('mousemove', this.document_onmousemove.bind(this));
+		window.document.addEventListener('mouseup', this.document_onmouseup.bind(this));
+	},
+
+	/**
+	 * @param {number} event.clientX
+	 * @param {number} event.clientY
+	 */
+	_saveStartPoint: function(event) {
+		this._startX = event.clientX;
+		this._startY = event.clientY;
+	},
+
+	/**
+	 * @param {number} event.clientX
+	 * @param {number} event.clientY
+	 */
+	_move: function(event) {
+		var dx = event.clientX - this._startX;
+		var dy = event.clientY - this._startY;
+		console.log(dx, dy);
+	},
+
+	/**
+	 * @see #swiping
+	 */
+	_startSwiping: function() {
+		this.swiping = true;
+	},
+
+	/**
+	 * @see #swiping
+	 */
+	_stopSwiping: function() {
+		this.swiping = false;
+	},
+
+	/**
+	 * @param {Event} event
+	 */
+	el_onmousedown: function(event) {
+		event.preventDefault();
+		this._startSwiping();
+		this._saveStartPoint(event);
+	},
+
+	/**
+	 * @param {Event} event
+	 */
+	document_onmousemove: function(event) {
+		if (this.swiping) {
+			this._move(event);
+		}
+	},
+
+	/**
+	 * @param {Event} event
+	 */
+	document_onmouseup: function(event) {
+		if (this.swiping) {
+			this._stopSwiping();
+		}
 	},
 });
