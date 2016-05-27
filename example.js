@@ -8,6 +8,11 @@ document.querySelector('.js-open').addEventListener('click', function(event) {
 	}
 });
 
+document.querySelector('.js-dialogContent').addEventListener('swipeout', function(event) {
+	console.log('flicked out!', event.dx, event.dy);
+	window.flickbee.restore();
+});
+
 document.addEventListener('click', function(event) {
 	var elTarget = event.target;
 	if (elTarget.closest('.dialog-content')) {

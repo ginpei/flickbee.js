@@ -21,6 +21,11 @@ if (!Object.assign) {
 
 Object.assign(FlickBee.prototype, {
 	/**
+	 * @type number
+	 */
+	thresholdX: 100,
+
+	/**
 	 * @type Boolean
 	 * @see #_startSwiping
 	 * @see #_stopSwiping
@@ -60,10 +65,13 @@ Object.assign(FlickBee.prototype, {
 	 * @param {number} event.clientY
 	 */
 	_move: function(event) {
+		var dx;
+		var dy;
 		var style;
+
 		if (event) {
-			var dx = event.clientX - this._startX;
-			var dy = event.clientY - this._startY;
+			dx = event.clientX - this._startX;
+			dy = event.clientY - this._startY;
 
 			style = {
 				rotate: this._getRotate(dx, dy),
@@ -72,9 +80,20 @@ Object.assign(FlickBee.prototype, {
 			};
 		}
 		else {
+			dx = 0;
+			dy = 0;
 			style = null;
 		}
+
+		this._dx = dx;
+		this._dy = dy;
 		this._setStyle(style);
+	},
+
+	/**
+	 */
+	restore: function() {
+		this._move(null);
 	},
 
 	/**
@@ -122,6 +141,31 @@ Object.assign(FlickBee.prototype, {
 	},
 
 	/**
+	 * @returns {Boolean}
+	 */
+	isSwipedFarther: function() {
+		return (this._dx < -this.thresholdX || this._dx > this.thresholdX);
+	},
+
+	/**
+	 */
+	_triggerSwiped: function() {
+		var event = this._createSwipeOutEvent();
+		this.el.dispatchEvent(event);
+	},
+
+	/**
+	 * @returns {Event}
+	 */
+	_createSwipeOutEvent: function() {
+		var event = new Event('swipeout');
+		event.type = 'swipeout';
+		event.dx = this._dx;
+		event.dy = this._dy;
+		return event;
+	},
+
+	/**
 	 * @param {Event} event
 	 */
 	el_onmousedown: function(event) {
@@ -145,7 +189,12 @@ Object.assign(FlickBee.prototype, {
 	document_onmouseup: function(event) {
 		if (this.swiping) {
 			this._stopSwiping();
-			this._move(null);
+			if (this.isSwipedFarther()) {
+				this._triggerSwiped();
+			}
+			else {
+				this.restore();
+			}
 		}
 	},
 });
