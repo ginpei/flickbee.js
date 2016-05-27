@@ -55,27 +55,55 @@ Object.assign(FlickBee.prototype, {
 	},
 
 	/**
+	 * @param {object} event If `null`, reset position.
 	 * @param {number} event.clientX
 	 * @param {number} event.clientY
 	 */
 	_move: function(event) {
-		var dx = event.clientX - this._startX;
-		var dy = event.clientY - this._startY;
+		var style;
+		if (event) {
+			var dx = event.clientX - this._startX;
+			var dy = event.clientY - this._startY;
 
-		var style = {
-			y: dy / 3,
-		};
+			style = {
+				rotate: this._getRotate(dx, dy),
+				x: dx / 2,
+				y: dy / 3,
+			};
+		}
+		else {
+			style = null;
+		}
 		this._setStyle(style);
 	},
 
 	/**
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns {number}
+	 */
+	_getRotate: function(x, y) {
+		return x/20;
+	},
+
+	/**
+	 * @param {number} style.x
 	 * @param {number} style.y
+	 * @param {number} style.rotate
 	 */
 	_setStyle: function(style) {
-		var styleDefinitions = [
-			'translateY(' + style.y + 'px)'
-		];
-		var styleText = styleDefinitions.join(' ');
+		var styleText;
+		if (style) {
+			var styleDefinitions = [
+				'translateX(' + style.x + 'px)',
+				'translateY(' + style.y + 'px)',
+				'rotate(' + style.rotate + 'deg)',
+			];
+			styleText = styleDefinitions.join(' ');
+		}
+		else {
+			styleText = null;
+		}
 		this.el.style.transform = styleText;
 	},
 
@@ -117,6 +145,7 @@ Object.assign(FlickBee.prototype, {
 	document_onmouseup: function(event) {
 		if (this.swiping) {
 			this._stopSwiping();
+			this._move(null);
 		}
 	},
 });
