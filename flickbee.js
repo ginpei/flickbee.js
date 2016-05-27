@@ -67,14 +67,16 @@ Object.assign(FlickBee.prototype, {
 	_move: function(event) {
 		var dx;
 		var dy;
+		var rotate;
 		var style;
 
 		if (event) {
 			dx = event.clientX - this._startX;
 			dy = event.clientY - this._startY;
+			rotate = this._getRotate(dx, dy);
 
 			style = {
-				rotate: this._getRotate(dx, dy),
+				rotate: rotate,
 				x: dx / 2,
 				y: dy / 3,
 			};
@@ -82,11 +84,13 @@ Object.assign(FlickBee.prototype, {
 		else {
 			dx = 0;
 			dy = 0;
+			rotate = 0;
 			style = null;
 		}
 
 		this._dx = dx;
 		this._dy = dy;
+		this._rotate = rotate;
 		this._setStyle(style);
 	},
 
@@ -162,6 +166,7 @@ Object.assign(FlickBee.prototype, {
 		event.type = 'swipeout';
 		event.dx = this._dx;
 		event.dy = this._dy;
+		event.rotate = this._rotate;
 		return event;
 	},
 

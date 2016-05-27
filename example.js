@@ -9,7 +9,7 @@ document.querySelector('.js-open').addEventListener('click', function(event) {
 });
 
 document.querySelector('.js-dialogContent').addEventListener('swipeout', function(event) {
-	console.log('flicked out!', event.dx, event.dy);
+	console.log('flicked out!', event.dx, event.dy, event.rotate);
 	window.flickbee.restore();
 });
 
