@@ -1,10 +1,11 @@
 body {
 	color: #333;
+	min-height: 10000px;
 }
 
 .dialog {
 	display: none;
-	position: absolute;
+	position: fixed;
 	left: 0;
 	top: 0;
 	width: 100%;
