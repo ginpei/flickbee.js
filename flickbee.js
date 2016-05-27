@@ -68,6 +68,9 @@ Object.assign(FlickBee.prototype, {
 		this._setStyle(style);
 	},
 
+	/**
+	 * @param {number} style.y
+	 */
 	_setStyle: function(style) {
 		var styleDefinitions = [
 			'translateY(' + style.y + 'px)'
