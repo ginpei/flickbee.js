@@ -2,4 +2,6 @@
 
 # FlickBee
 
+- [GitHub](https://github.com/ginpei/flickbee.js)
+
 ![A demo animation](demo.gif);
