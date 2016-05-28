@@ -98,6 +98,8 @@ Object.assign(FlickBee.prototype, {
 	 */
 	restore: function() {
 		this._move(null);
+		this.el.style.transition = null;
+		this.el.style.opacity = null;
 	},
 
 	/**
@@ -168,6 +170,26 @@ Object.assign(FlickBee.prototype, {
 		event.dy = this._dy;
 		event.rotate = this._rotate;
 		return event;
+	},
+
+	/**
+	 * @param {function} callback
+	 */
+	fadeOut: function(callback) {
+		var listener = function(event) {
+			this.el.removeEventListener('transitionend', listener);
+			callback();
+		}.bind(this);
+
+		this.el.addEventListener('transitionend', listener);
+		this.el.style.transition = 'transform 1s, opacity 1s';
+		this.el.style.opacity = 0;
+
+		var x = this._startX + this._dx;
+		this._move({
+			clientX: (this._dx>0 ? x+50 : x-50),
+			clientY: this._startX + this._dy + 50,
+		});
 	},
 
 	/**

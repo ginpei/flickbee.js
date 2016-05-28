@@ -9,8 +9,13 @@ document.querySelector('.js-open').addEventListener('click', function(event) {
 });
 
 document.querySelector('.js-dialogContent').addEventListener('swipeout', function(event) {
-	console.log('flicked out!', event.dx, event.dy, event.rotate);
-	window.flickbee.restore();
+	var elDialogContent = event.currentTarget;
+	var elDialog = elDialogContent.closest('.js-dialog');
+	var flickbee = window.flickbee;
+	flickbee.fadeOut(function() {
+		elDialog.classList.remove('is-visible');
+		flickbee.restore();
+	});
 });
 
 document.addEventListener('click', function(event) {
