@@ -20,7 +20,7 @@ document.addEventListener('click', function(event) {
 		return;
 	}
 
-	var elDialog = elTarget.closest('.dialog');
+	var elDialog = elTarget.closest('.js-dialog');
 	if (elDialog) {
 		elDialog.classList.remove('is-visible');
 		return;
