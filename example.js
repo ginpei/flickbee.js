@@ -1,3 +1,6 @@
+/* eslint new-cap: ["error", { "capIsNewExceptions": ["FlickBee"] }] */
+/* global FlickBee */
+
 document.querySelector('.js-open').addEventListener('click', function(event) {
 	var elDialog = document.querySelector('.js-dialog');
 	elDialog.classList.add('is-visible');
@@ -34,7 +37,10 @@ document.addEventListener('click', function(event) {
 
 if (!window.Element.prototype.closest) {
 	window.Element.prototype.closest = function(selector) {
-		for (var el=this; el&&!el.matches(selector); el=el.parentElement) ;
+		var el = this;  // eslint-disable-line consistent-this
+		for (el; el&&!el.matches(selector); el=el.parentElement) {
+			// nothing to do
+		}
 		return el;
 	};
 }
